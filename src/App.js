@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import NavBar from './app/components/navBar';
-import ProtectedRoute from './app/components/common/protectedRoute';
-import RegisterForm from './app/components/registerForm';
-import LoginForm from './app/components/loginform';
-import Logout from './app/components/logout';
-import Profile from './app/components/profile';
-import Movies from './app/components/movies/movies';
-import MovieForm from './app/components/movies/movieForm';
-import GenreForm from './app/components/genreForm';
-import Customers from './app/components/customers';
-import Rentals from './app/components/rentals';
-import NotFound from './app/components/notFound';
+import NavBar from './components/navBar';
+import ProtectedRoute from './components/common/protectedRoute';
+import RegisterForm from './components/registerForm';
+import LoginForm from './components/loginform';
+import Logout from './components/logout';
+import Profile from './components/profile';
+import Movies from './components/movies/movies';
+import MovieForm from './components/movies/movieForm';
+import GenreForm from './components/genreForm';
+import Customers from './components/customers';
+import Rentals from './components/rentals';
+import NotFound from './components/notFound';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import auth from './app/services/authService';
+import auth from './services/authService';
 
 class App extends Component {
   state = {};

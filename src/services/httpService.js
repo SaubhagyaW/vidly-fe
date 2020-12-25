@@ -2,6 +2,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Constants from '../util/constants';
 
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
 function setJWTToken(jwtToken) {
   axios.defaults.headers.common[Constants.AUTH_HEADER] = jwtToken;
 }

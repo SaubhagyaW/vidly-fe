@@ -1,7 +1,7 @@
 import Endpoints from '../util/endpoints';
 import http from './httpService';
 
-const GENRES_URL = `${Endpoints.BASE_URL}${Endpoints.GENRES_ENDPOINT}`;
+const GENRES_URL = `${Endpoints.GENRES_ENDPOINT}`;
 
 export async function saveGenre(genre) {
   return await http.post(GENRES_URL, genre);

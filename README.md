@@ -37,17 +37,20 @@ ProtectedRoute  -|            -> Pagination
 ```
 
 ## TODO
-1. Implement FE according to the API spec.
+1. Resolve FIXME comments
+2. Implement FE according to the API spec.
     - Proper error handling.
     - FE error handling is already done for user already registered and login failed error scenarios with HTTP 400 status code. But, currently BE is returning HTTP 500.
     - Edit/Delete Genre
     - Handle /returns API
     - Profile and User access rights.
-2. Pagination
+3. Verify Page Not Found redirections
+    - Invalid Movie Id redirection not working when it's a string
+4. Pagination
     - Add server side pagination
     - Previous and Next
-3. De-activate highlighting of "All Genres" when loading.
-4. Add toast.success() messages.
-5. Improve Sign-up/Sign-in view.
-6. Improve UI.
-7. Check Sentry (sentry.io) for logging.
+5. De-activate highlighting of "All Genres" when loading.
+6. Add toast.success() messages.
+7. Improve Sign-up/Sign-in view.
+8. Improve UI.
+9. Check Sentry (sentry.io) for logging.

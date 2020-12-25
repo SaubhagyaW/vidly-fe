@@ -3,7 +3,7 @@ import Endpoints from '../util/endpoints';
 import Constants from '../util/constants';
 import http from './httpService';
 
-const AUTH_URL = `${Endpoints.BASE_URL}${Endpoints.AUTH_ENDPOINT}`;
+const AUTH_URL = `${Endpoints.AUTH_ENDPOINT}`;
 
 // Set Authentication header to all requests.
 http.setJWTToken(localStorage.getItem(Constants.AUTH_HEADER));

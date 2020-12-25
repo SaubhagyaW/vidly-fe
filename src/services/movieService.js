@@ -1,7 +1,7 @@
 import Endpoints from '../util/endpoints';
 import http from './httpService';
 
-const MOVIES_URL = `${Endpoints.BASE_URL}${Endpoints.MOVIES_ENDPOINT}`;
+const MOVIES_URL = `${Endpoints.MOVIES_ENDPOINT}`;
 
 export async function saveMovie(movie) {
   return await http.post(MOVIES_URL, movie);
