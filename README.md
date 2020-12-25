@@ -37,9 +37,10 @@ ProtectedRoute  -|            -> Pagination
 ```
 
 ## TODO
-1. Implement FE according to the API spec and Error handling.
+1. Implement FE according to the API spec.
+    - Proper error handling.
+    - FE error handling is already done for user already registered and login failed error scenarios with HTTP 400 status code. But, currently BE is returning HTTP 500.
     - Edit/Delete Genre
-    - Handle user already registered and login failed error scenarios with a HTTP 400 status code. Currently returning HTTP 500.
     - Handle /returns API
     - Profile and User access rights.
 2. Pagination
