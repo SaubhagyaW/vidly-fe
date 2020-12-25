@@ -1,9 +1,8 @@
 import React from 'react';
 import Joi from 'joi-browser';
-
 import Form from '../common/form/form';
-import { getGenres } from '../../services/fakeGenreService';
-import { getMovie, saveMovie } from '../../services/fakeMovieService';
+import genreService from '../../services/genreService';
+import movieService from '../../services/movieService';
 
 class MovieForm extends Form {
   state = {
@@ -33,17 +32,28 @@ class MovieForm extends Form {
       .label('Daily Rental Rate')
   };
 
-  componentDidMount() {
-    const genres = getGenres();
+  async componentDidMount() {
+    // Populate Genres
+    const { data: genres } = await genreService.getGenres();
     this.setState({ genres: genres });
 
+    // FIXME - Review code block
+    const { data: movies } = await movieService.getMovies();
+    this.setState({ movies: movies });
+    // ---------------------------------
+
+    // Populate Movie Form when editing a Movie (If the Movie Id is valid).
+    // Otherwise, redirect to Page not Found.
     const movieId = this.props.match.params.id;
     if (movieId === 'new') return;
 
-    const movie = getMovie(movieId);
-    if (!movie) return this.props.history.replace('/not-found');
-
-    this.setState({ data: this.mapToViewmodel(movie) });
+    try {
+      const { data: movie } = await movieService.getMovie(movieId);
+      this.setState({ data: this.mapToViewmodel(movie) });
+    } catch (e) {
+      if (e.response && e.response.status === 404)
+        this.props.history.replace('/not-found');
+    }
   }
 
   mapToViewmodel(movie) {
@@ -56,8 +66,26 @@ class MovieForm extends Form {
     };
   }
 
-  doSubmit = () => {
-    saveMovie(this.state.data);
+  doSubmit = async () => {
+    const movieId = this.props.match.params.id;
+
+    let resp;
+    let movies;
+    if (movieId === 'new') {
+      // Create movie
+      resp = await movieService.saveMovie(this.state.data);
+
+      movies = [resp.data, ...this.state.movies];
+    } else {
+      // Edit movie
+      resp = await movieService.updateMovie(movieId, this.state.data);
+
+      movies = { ...this.state.movies };
+      const index = movies.indexOf(movies.filter((m) => m._id === movieId));
+      movies[index] = { ...resp.data };
+    }
+
+    this.setState({ movies: movies });
 
     // Redirect to Movies page after saving a new Movie.
     this.props.history.replace('/movies');

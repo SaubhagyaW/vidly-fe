@@ -1,54 +1,74 @@
-import './App.css';
-
+import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import NavBar from './app/components/navBar';
+import ProtectedRoute from './app/components/common/protectedRoute';
+import RegisterForm from './app/components/registerForm';
+import LoginForm from './app/components/loginform';
+import Logout from './app/components/logout';
+import Profile from './app/components/profile';
+import Movies from './app/components/movies/movies';
+import MovieForm from './app/components/movies/movieForm';
+import GenreForm from './app/components/genreForm';
+import Customers from './app/components/customers';
+import Rentals from './app/components/rentals';
+import NotFound from './app/components/notFound';
+import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
+import auth from './app/services/authService';
 
-import NavBar from './components/navBar';
-import LoginForm from './components/loginform';
-import RegisterForm from './components/registerForm';
-import Movies from './components/movies/movies';
-import MovieForm from './components/movies/movieForm';
-import Customers from './components/customers';
-import Rentals from './components/rentals';
-import NotFound from './components/notFound';
+class App extends Component {
+  state = {};
 
-function App() {
-  return (
-    <main className="container">
-      <NavBar />
+  componentDidMount() {
+    const user = auth.getCurrentUser();
+    this.setState({ user: user });
+  }
 
-      <Switch>
-        <Route path="/login" component={LoginForm} />
-        <Route path="/register" component={RegisterForm} />
+  render() {
+    return (
+      <main className="container">
+        <ToastContainer />
 
-        {/* Path params. */}
-        <Route path="/movies/:id" component={MovieForm} />
-        <Route path="/movies" component={Movies} />
+        <NavBar user={this.state.user} />
 
-        {/* Query String params. */}
-        {/* No changes in the Route. */}
-        {/* Can access this in the Component using; */}
-        {/* import queryString from 'query-string' */}
-        {/* import Customers from './components/customers';
-            const { sortByimport } = queryString.parse(location.search); */}
+        <Switch>
+          <Route path="/register" component={RegisterForm} />
+          <Route path="/login" component={LoginForm} />
+          <ProtectedRoute path="/logout" component={Logout} />
+          <ProtectedRoute path="/profile" component={Profile} />
 
-        {/* Passing custom props. */}
-        {/* <Route
-            path="/customers"
-            render={(props) => <Customers sortBy="newest" {...props} />}
-          /> */}
+          {/* Path params. */}
+          <ProtectedRoute path="/movies/:id" component={MovieForm} />
+          <ProtectedRoute path="/movies" component={Movies} />
+          <ProtectedRoute path="/genres/new" component={GenreForm} />
 
-        <Route path="/customers" component={Customers} />
-        <Route path="/rentals" component={Rentals} />
+          {/* Query String params. */}
+          {/* No changes in the Route. */}
+          {/* Can access this in the Component using; */}
+          {/* import queryString from 'query-string' */}
+          {/* import Customers from './components/customers';
+              const { sortByimport } = queryString.parse(location.search); */}
 
-        {/* Redirect Home page to Movies page. */}
-        <Redirect from="/" exact to="/movies" />
+          {/* Passing custom props. */}
+          {/* <Route
+              path="/customers"
+              render={(props) => <Customers sortBy="newest" {...props} />}
+            /> */}
 
-        {/* Page Not Found. */}
-        <Route path="/not-found" component={NotFound} />
-        <Redirect to="/not-found" />
-      </Switch>
-    </main>
-  );
+          <ProtectedRoute path="/customers" component={Customers} />
+          <ProtectedRoute path="/rentals" component={Rentals} />
+
+          {/* Redirect Home page to Movies page. */}
+          <Redirect from="/" exact to="/movies" />
+
+          {/* Page Not Found. */}
+          <Route path="/not-found" component={NotFound} />
+          <Redirect to="/not-found" />
+        </Switch>
+      </main>
+    );
+  }
 }
 
 export default App;

@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-
-import { PAGE_SIZE } from '../../util/constants';
-
+import Constants from '../../util/constants';
 import MoviesTable from './moviesTable';
 import ListGroup from '../common/listGroup';
 import Pagination from '../common/pagination';
-
 import { paginate } from '../../util/pagination_util';
-import { getMovies } from '../../services/fakeMovieService';
-import { getGenres } from '../../services/fakeGenreService';
 import SearchBox from '../common/searchBox';
+import genreService from '../../services/genreService';
+import movieService from '../../services/movieService';
 
 class Movies extends Component {
   state = {
@@ -23,11 +20,13 @@ class Movies extends Component {
     sortColumn: { path: 'title', order: 'asc' }
   };
 
-  componentDidMount() {
-    const genres = [this.state.selectedGenre, ...getGenres()];
+  async componentDidMount() {
+    const { data: genreList } = await genreService.getGenres();
+    const genres = [this.state.selectedGenre, ...genreList];
 
+    const { data: movieList } = await movieService.getMovies();
     this.setState({
-      movies: getMovies(),
+      movies: movieList,
       genres: genres
     });
   }
@@ -52,8 +51,11 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleDeleteMovie = (id) => {
-    this.setState({ movies: this.state.movies.filter((m) => m._id !== id) });
+  handleDeleteMovie = async (id) => {
+    const { data: movieId } = await movieService.deleteMovie(id);
+
+    const movies = this.state.movies.filter((m) => m._id !== movieId);
+    this.setState({ movies: movies });
   };
 
   handleSort = (sortColumn) => {
@@ -97,7 +99,7 @@ class Movies extends Component {
     );
 
     // Pagination
-    const movies = paginate(sortedMovies, currentPage, PAGE_SIZE);
+    const movies = paginate(sortedMovies, currentPage, Constants.PAGE_SIZE);
 
     return { totalMovies: filteredMovies.length, movies: movies };
   };
@@ -112,7 +114,7 @@ class Movies extends Component {
       sortColumn
     } = this.state;
 
-    if (count === 0) return <p>There are no movies in the database.</p>;
+    if (count === 0) <p>There are no movies in the database.</p>;
 
     const { totalMovies, movies } = this.getPagedData();
 
@@ -131,6 +133,14 @@ class Movies extends Component {
           <Link
             className="btn btn-primary"
             style={{ marginBottom: 20 }}
+            to={`/genres/new`}
+          >
+            New Genre
+          </Link>
+
+          <Link
+            className="btn btn-primary"
+            style={{ marginLeft: 20, marginBottom: 20 }}
             to={`/movies/new`}
           >
             New Movie
@@ -152,7 +162,7 @@ class Movies extends Component {
 
           <Pagination
             itemsCount={totalMovies}
-            pageSize={PAGE_SIZE}
+            pageSize={Constants.PAGE_SIZE}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
           />

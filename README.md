@@ -29,6 +29,14 @@ Search movies.
 ## TODO
 1. Pagination - Previous and Next
 2. De-activate highlighting of "All Genres" when loading.
+4. Handle HTTP 404 error.
+5. Add toast.success() messages.
+6. Check Sentry (sentry.io) for logging.
+7. Document API spec.
+8. Error handling.
+    -Handle user already registered and login failed error scenarios with a HTTP 400 status code. Currently returning HTTP 500.
+9. Document modules used.
+10. Improve Sign-up/Sign-in view.
 
 
 

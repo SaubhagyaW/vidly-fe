@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Joi from 'joi-browser';
-
 import Field from './field';
 import SelectField from './selectField';
 
