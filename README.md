@@ -1,53 +1,52 @@
-# vidly-fe
-FE for Vidly project - An application for Movie Rental Shop
-
-
 # Vidly FE
 React JS front-end for a Movie rental shop.
 
-## Features
-- Movies View
-    - A table view.
-    - Categorized by Genre
-        - Defining default props.
-    - With client side pagination.
-        - Prop type validations added (Using prop-types module).
-        - Current page selection highlight.
-    - Sort ascending and descending by each column.
-    - Like button for each movie.
-        - Cursor pointer style added. (Hand icon when hovering over the Like button).
+## Functionality
+- Sign-up/Sign-in
+- UI validations for forms.
+- Movies view.
+    - Categorized by Genre.
+    - A table view paginated with 10 records per page.
+    - Add/Edit/Delete Genre.
+    - Add/Edit/Delete Movie.
+    - Like Movie.
+    - Search Movie
+    - Sort Movies by Title, Genre, Stock or Rate.
+- User profile
+    - Edit user profile.
+    - Administrative users can edit other users' access rights.
 
-Add/Edit movies
-Form validation with Joi
-types: text, select
-password input.
+## Implementation Details
 
-Search movies.
+### Component tree
 
-
+```
+NavBar
+                  -   Movies  -> ListGroup
+                 |            -> SearchBox
+                 |            -> MoviesTable  -> Table    -> TableHeader
+                 |                                        -> TableBody
+                 |                            -> Like
+ProtectedRoute  -|            -> Pagination
+                 |-   Customers
+                 |-   Rentals
+                 |-   Profile
+                 |-   MovieForm       --
+                 |-   RegisterForm    --|- extends Form   -> Field
+                  -   LoginForm       --                  -> SelectField
+```
 
 ## TODO
-1. Pagination - Previous and Next
-2. De-activate highlighting of "All Genres" when loading.
-4. Handle HTTP 404 error.
-5. Add toast.success() messages.
-6. Check Sentry (sentry.io) for logging.
-7. Document API spec.
-8. Error handling.
-    -Handle user already registered and login failed error scenarios with a HTTP 400 status code. Currently returning HTTP 500.
-9. Document modules used.
-10. Improve Sign-up/Sign-in view.
-
-
-
-Component tree
-Movies -> MoviesTable
-(Re-usable components)
--> Table -> TableHeader
-         -> TableBody
-         -> Pagination
-         -> Like
-
-LoginForm       --
-RegisterForm    --|- extends Form -> Field
-MovieForm       --                -> SelectField
+1. Implement FE according to the API spec and Error handling.
+    - Edit/Delete Genre
+    - Handle user already registered and login failed error scenarios with a HTTP 400 status code. Currently returning HTTP 500.
+    - Handle /returns API
+    - Profile and User access rights.
+2. Pagination
+    - Add server side pagination
+    - Previous and Next
+3. De-activate highlighting of "All Genres" when loading.
+4. Add toast.success() messages.
+5. Improve Sign-up/Sign-in view.
+6. Improve UI.
+7. Check Sentry (sentry.io) for logging.
